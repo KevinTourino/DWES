@@ -54,5 +54,14 @@ else{
 mysqli_close($db);
 ?>
 </ul>
+
+<h3>Añadir un comentario:</h3>
+<form action="comment.php" method="POST">
+    <textarea name="new_comment" rows="4" cols="50" placeholder="Escribe tu comentario aquí..."></textarea>
+    <input type="hidden" name="juego_id" value="<?php echo $juego_id; ?>">
+    <br><br>
+    <input type="submit" value="Enviar comentario">
+</form>
+
 </body>
 </html>
