@@ -28,12 +28,13 @@ CREATE TABLE `tComentarios` (
   `comentario` varchar(2000) DEFAULT NULL,
   `usuario_id` int(11) DEFAULT NULL,
   `juego_id` int(11) NOT NULL,
+  `fecha` timestamp NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
   KEY `usuario_id` (`usuario_id`),
   KEY `juego_id` (`juego_id`),
   CONSTRAINT `tComentarios_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `tUsuarios` (`id`),
   CONSTRAINT `tComentarios_ibfk_2` FOREIGN KEY (`juego_id`) REFERENCES `tJuegos` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -44,11 +45,14 @@ LOCK TABLES `tComentarios` WRITE;
 /*!40000 ALTER TABLE `tComentarios` DISABLE KEYS */;
 set autocommit=0;
 INSERT INTO `tComentarios` VALUES
-(1,'Me encanta la libertad que ofrece este juego.',1,1),
-(2,'La historia y los gráficos son impresionantes.',2,2),
-(3,'Esperaba más optimización, pero la ambientación es brutal.',3,3),
-(4,'Perfecto para jugar con amigos y crear mundos.',4,4),
-(5,'La campaña es muy emocionante y divertida.',5,5);
+(1,'Me encanta la libertad que ofrece este juego.',1,1,'2025-10-15 08:50:06'),
+(2,'La historia y los gráficos son impresionantes.',2,2,'2025-10-15 08:50:06'),
+(3,'Esperaba más optimización, pero la ambientación es brutal.',3,3,'2025-10-15 08:50:06'),
+(4,'Perfecto para jugar con amigos y crear mundos.',4,4,'2025-10-15 08:50:06'),
+(5,'La campaña es muy emocionante y divertida.',5,5,'2025-10-15 08:50:06'),
+(6,'Es un juego desafiante y entretenido.',1,5,'2025-10-15 08:50:06'),
+(7,'Tiene una gran historia y una gran banda sonora.',1,5,'2025-10-15 08:50:06'),
+(8,'Extraordinario, interactivo y magistral. Esas son las palabras perfectas para describir a Breath of the Wild.',1,1,'2025-10-15 08:52:59');
 /*!40000 ALTER TABLE `tComentarios` ENABLE KEYS */;
 UNLOCK TABLES;
 commit;
@@ -131,4 +135,4 @@ commit;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*M!100616 SET NOTE_VERBOSITY=@OLD_NOTE_VERBOSITY */;
 
--- Dump completed on 2025-10-09 11:34:39
+-- Dump completed on 2025-10-15 10:56:42

@@ -14,24 +14,21 @@ if (trim($comentario) == '') {
 
 
 $query = "INSERT INTO tComentarios (comentario, juego_id, usuario_id) VALUES ('".$comentario."', ".$juego_id.", 1)";
-
 $result = mysqli_query($db, $query) or die('Error al insertar comentario');
-
 
 $nuevo_id = mysqli_insert_id($db);
 
 mysqli_close($db);
 ?>
-
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>Comentario añadido</title>
+<meta charset="UTF-8">
+<title>Comentario añadido</title>
 </head>
 <body>
-    <h2>Comentario añadido correctamente</h2>
-    <p>Tu comentario ha sido añadido con el ID: <?php echo $nuevo_id; ?></p>
-    <a href="detail.php?id=<?php echo $juego_id; ?>">Volver al juego</a>
+<h2>Comentario añadido correctamente</h2>
+<p>Tu comentario ha sido añadido con el ID: <?php echo $nuevo_id; ?></p>
+<a href="detail.php?id=<?php echo $juego_id; ?>">Volver al juego</a>
 </body>
 </html>
