@@ -7,6 +7,84 @@ $db = mysqli_connect('localhost', 'admin', '1234', 'mysitedb') or die('Fail');
 <head>
 <meta charset="UTF-8">
 <title>Lista de Juegos</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        padding: 20px;
+    }
+
+    h1 {
+        text-align: center;
+        color: #333;
+    }
+
+    .juegos-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+        margin-top: 30px;
+    }
+
+    .juego-card {
+        background-color: #fff;
+        margin-bottom: 20px;
+        border-radius: 10px;
+        padding: 15px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        opacity: 0;
+        animation: fadeIn 0.8s forwards;
+    }
+
+    .juego-card:hover {
+        transform: scale(1.10);
+        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    }
+
+    .juego-card img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 6px;
+    }
+
+    .no-imagen {
+        width: 100%;
+        height: 150px;
+        background-color: #ccc;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 6px;
+        font-style: italic;
+        color: #555;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            filter: blur(4px);
+        }
+        to {
+            opacity: 1;
+            filter: blur(0);
+        }
+    }
+
+    a {
+        text-decoration: none;
+        color: #007BFF;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+    p {
+        margin: 5px 0;
+    }
+</style>
 </head>
 <body>
     <h1>Catálogo de Juegos</h1>
