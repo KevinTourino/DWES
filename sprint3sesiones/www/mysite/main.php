@@ -1,4 +1,5 @@
 <?php
+session_start();
 $db = mysqli_connect('localhost', 'admin', '1234', 'mysitedb') or die('Fail');
 ?>
 <!DOCTYPE html>
@@ -9,10 +10,16 @@ $db = mysqli_connect('localhost', 'admin', '1234', 'mysitedb') or die('Fail');
 </head>
 <body>
     <h1>Catálogo de Juegos</h1>
+
+    <?php if (isset($_SESSION['user_id'])): ?>
+        <p>Bienvenido, <?php echo htmlspecialchars($_SESSION['email']); ?> | <a href="logout.php">Cerrar sesión</a></p>
+    <?php else: ?>
+        <p><a href="login.html">Iniciar sesión</a></p>
+    <?php endif; ?>
     
     <div class="juegos-grid">
     <?php
-    // 2. Lanzar una consulta
+    // Lanzar una consulta
     $query = 'SELECT * FROM tJuegos';
     $result = mysqli_query($db, $query) or die('Query error');
     
