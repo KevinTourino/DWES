@@ -1,5 +1,6 @@
 <?php
 ob_start();
+session_start();
 
 // Conectar a la base de datos
 $db = mysqli_connect('localhost', 'admin', '1234', 'mysitedb') or die('Error de conexión a la base de datos');
@@ -35,7 +36,11 @@ else {
         if (!password_verify($password, $user['contraseña'])) {
             $error = 'La contraseña es incorrecta';
         }
+        //Guardar datos usuario
         else {
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['email'] = $user['email'];
+
             mysqli_close($db);
             ob_end_clean();
             header('Location: main.php');
