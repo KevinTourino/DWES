@@ -84,13 +84,23 @@ $db = mysqli_connect('localhost', 'admin', '1234', 'mysitedb') or die('Fail');
     p {
         margin: 5px 0;
     }
+
+    user-actions {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 </style>
 </head>
 <body>
     <h1>Catálogo de Juegos</h1>
 
     <?php if (isset($_SESSION['user_id'])): ?>
-        <p>Bienvenido, <?php echo htmlspecialchars($_SESSION['email']); ?> | <a href="logout.php">Cerrar sesión</a></p>
+        <div class="user-actions">
+            <p>Bienvenido, <?php echo htmlspecialchars($_SESSION['email']); ?></p>
+            <a href="logout.php">Cerrar sesión</a> |
+            <a href="changepassword.html">Cambiar contraseña</a>
+        </div>
     <?php else: ?>
         <p><a href="login.html">Iniciar sesión</a></p>
     <?php endif; ?>
