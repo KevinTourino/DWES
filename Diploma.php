@@ -1,5 +1,8 @@
 <?php
-require('fpdf/fpdf.php');
+error_reporting(E_ERROR | E_PARSE);
+ini_set('display_errors', 0);
+
+require('fpdf.php');
 
 // Obtener parámetros GET
 $name = isset($_GET['name']) ? $_GET['name'] : 'Nombre';
@@ -11,25 +14,35 @@ if (empty(trim($name)) || empty(trim($surname))) {
 }
 
 // Crear instancia de FPDF
-$pdf = new FPDF('L', 'mm', 'A4');
+$pdf = new FPDF('L', 'mm', 'A4'); // Landscape (horizontal), milímetros, tamaño A4
 $pdf->AddPage();
 
 // ===== FONDO CON COLOR =====
-$pdf->SetFillColor(245, 245, 220);
+$pdf->SetFillColor(245, 245, 220); // Color beige claro
 $pdf->Rect(0, 0, 297, 210, 'F');
 
 // ===== BORDE DECORATIVO =====
-$pdf->SetDrawColor(184, 134, 11);
+$pdf->SetDrawColor(184, 134, 11); // Color dorado oscuro
 $pdf->SetLineWidth(2);
 $pdf->Rect(10, 10, 277, 190);
 $pdf->SetLineWidth(0.5);
 $pdf->Rect(15, 15, 267, 180);
 
-// ===== IMAGEN 1: LOGO/SELLO SUPERIOR (si existe) =====
-// Descomenta y ajusta si tienes una imagen
-// if (file_exists('images/logo.png')) {
-//     $pdf->Image('images/logo.png', 130, 20, 30);
-// }
+
+
+echo '<pre>';
+var_dump(realpath('imagenes/sello.png.png'));
+var_dump(file_exists('imagenes/sello.png'));
+var_dump(realpath('imagenes/borde.png'));
+var_dump(file_exists('imagenes/borde.png'));
+exit;
+
+
+
+// ===== IMAGEN 1: SELLO SUPERIOR =====
+if (file_exists('imagenes/sello.jpg')) {
+    $pdf->Image('imagenes/sello.jpg', 125, 20, 40); // x, y, ancho
+}
 
 // ===== CELDA 1: TÍTULO PRINCIPAL =====
 $pdf->SetFont('Arial', 'B', 40);
@@ -115,19 +128,5 @@ $pdf->SetXY(187, 176);
 $pdf->SetFont('Arial', '', 9);
 $pdf->Cell(60, 5, 'Coordinador Academico', 0, 1, 'C');
 
-// ===== ALGO EXTRA: NÚMERO DE CERTIFICADO =====
-$pdf->SetFont('Arial', 'I', 8);
-$pdf->SetTextColor(150, 150, 150);
-$pdf->SetXY(20, 195);
-$numeroCertificado = 'No. Certificado: DWES-' . date('Y') . '-' . str_pad(rand(1000, 9999), 4, '0', STR_PAD_LEFT);
-$pdf->Cell(257, 5, $numeroCertificado, 0, 1, 'C');
-
-// ===== CÓDIGO QR SIMULADO (decorativo) =====
-$pdf->SetFont('Courier', '', 6);
-$pdf->SetTextColor(100, 100, 100);
-$pdf->SetXY(15, 195);
-$pdf->Cell(30, 5, 'QR: ' . md5($fullName . $fecha), 0, 0, 'L');
-
-// Generar el PDF
-$pdf->Output('D', 'Diploma_' . str_replace(' ', '_', $fullName) . '.pdf');
+$pdf->Output();
 ?>
