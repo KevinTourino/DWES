@@ -40,8 +40,8 @@ exit;
 
 
 // ===== IMAGEN 1: SELLO SUPERIOR =====
-if (file_exists('imagenes/sello.jpg')) {
-    $pdf->Image('imagenes/sello.jpg', 125, 20, 40); // x, y, ancho
+if (file_exists('imagenes/sello.png')) {
+    $pdf->Image('imagenes/sello.png', 125, 20, 40); // x, y, ancho
 }
 
 // ===== CELDA 1: TÍTULO PRINCIPAL =====
