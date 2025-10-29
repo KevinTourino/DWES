@@ -21,23 +21,6 @@ $pdf->AddPage();
 $pdf->SetFillColor(245, 245, 220); // Color beige claro
 $pdf->Rect(0, 0, 297, 210, 'F');
 
-// ===== BORDE DECORATIVO =====
-$pdf->SetDrawColor(184, 134, 11); // Color dorado oscuro
-$pdf->SetLineWidth(2);
-$pdf->Rect(10, 10, 277, 190);
-$pdf->SetLineWidth(0.5);
-$pdf->Rect(15, 15, 267, 180);
-
-
-
-echo '<pre>';
-var_dump(realpath('imagenes/sello.png.png'));
-var_dump(file_exists('imagenes/sello.png'));
-var_dump(realpath('imagenes/borde.png'));
-var_dump(file_exists('imagenes/borde.png'));
-exit;
-
-
 
 // ===== IMAGEN 1: SELLO SUPERIOR =====
 if (file_exists('imagenes/sello.png')) {
