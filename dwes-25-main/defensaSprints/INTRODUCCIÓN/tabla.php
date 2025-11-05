@@ -5,12 +5,14 @@
       <tr><th>Expresión</th><th>Resultado</th></tr>
       <?php
       /*Cambia el for por un while*/
-        for ($i = 1; $i <= 10; $i = $i + 1) {
+      $i = 0;
+        while($i<10) {
           $res = 7 * $i;
           echo "<tr>";
           echo "<td>7 x " . $i . "</td>";
           echo "<td>" . $res . "</td>";
           echo "</tr>";
+          $i=$i+1;
         }
       ?>
     </table>
