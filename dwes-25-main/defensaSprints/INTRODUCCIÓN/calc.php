@@ -12,7 +12,17 @@ if (isset($_POST["op"])) {
   Debe de mostrar  Falta operando 1 o Falta operando 2 según corresponda.
  */
   if (empty($a) || empty($b)) {
-    echo "Falta un operando.";
+    if (empty($a) && empty($b)){
+      echo "Falta operando 1 y 2.";
+    }
+    else{
+      if (empty($a)){
+        echo "Falta operando 1.";
+      }
+      else{
+        echo "Falta operando 2.";
+      }
+    }
   } else {
     switch ($op) {
       case "suma":
