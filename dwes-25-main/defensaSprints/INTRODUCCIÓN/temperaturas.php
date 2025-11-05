@@ -32,10 +32,10 @@
       <label for="cantidad">Cantidad:</label><br>
       <input type="text" id="cantidad" name="cantidad" ><br>
 
-      <input type="radio" id="aF" name="conversion" value="aFar">
+      <input type="radio" id="aF" name="conversion" value="aF">
       <label for="aF">Celsius → Fahrenheit</label><br>
 
-      <input type="radio" id="aC" name="conversion" value="aCent">
+      <input type="radio" id="aC" name="conversion" value="aC">
       <label for="aC">Fahrenheit → Celsius</label><br><br>
 
       <input type="submit" value="Convertir">
