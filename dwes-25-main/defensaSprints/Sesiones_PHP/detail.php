@@ -47,6 +47,7 @@ echo '      <a href="/main.php">Volver</a>';
 
 echo '    </nav>';
 echo '  </header>';
+echo ' <h1>'. $_SESSION['user_id'] . '</h1>';
 
 echo '  <h2>' . $song['artista'] . '</h2>';
 echo '  <img class="cover" src="' . $song['url_imagen'] . '" alt="cover"><br>';
