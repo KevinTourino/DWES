@@ -30,7 +30,7 @@ mysqli_stmt_close($stmt);
 
 $hash = password_hash($pass1, PASSWORD_DEFAULT);
 $stmt2 = mysqli_prepare($db, "INSERT INTO tUsuarios(nombre, apellidos, email, contraseña) VALUES(?,?,?,?)");
-mysqli_stmt_bind_param($stmt2, "sis", $nombre, $apellidos, $email, $hash);
+mysqli_stmt_bind_param($stmt2, "siss", $nombre, $apellidos, $email, $hash);
 mysqli_stmt_execute($stmt2) or die('Error al registrar');
 mysqli_stmt_close($stmt2);
 
