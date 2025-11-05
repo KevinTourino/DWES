@@ -18,14 +18,15 @@
 
       echo "<table border='1'>";
       echo "<tr><th>Producto</th><th>Precio (€)</th></tr>";
-
+      $i=0;
       foreach ($productos as $producto) {
         
         echo "<tr>";
         echo "<td>" . $producto . "</td>";
-        echo "<td>" .  . "</td>";
+        echo "<td>" . number_format($precios[$i],2) . "</td>";
         echo "</tr>";
-        $total = $total + $precio;
+        $total = $total + number_format($precios[$i],2);
+        $i=$i+1;
       }
 
       echo "<tr><td><b>TOTAL</b></td><td><b>" . $total . "</b></td></tr>";
