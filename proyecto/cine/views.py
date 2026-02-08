@@ -2,61 +2,32 @@
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Pelicula
+from .serializers import PeliculaSerializer
 
 
 class PeliculaListAPIView(APIView):
     def get(self, request):
+        """GET lista - devuelve todas las peliculas"""
         peliculas = Pelicula.objects.all()
-        data = []
-        for pelicula in peliculas:
-            data.append({
-                'id': pelicula.id,
-                'titulo': pelicula.titulo,
-                'duracion': pelicula.duracion,
-                'fecha_estreno': pelicula.fecha_estreno,
-                'precio': str(pelicula.precio),
-                'disponible': pelicula.disponible
-            })
-        return Response(data)
+        serializer = PeliculaSerializer(peliculas, many=True)
+        return Response(serializer.data)
 
     def post(self, request):
-        try:
-            pelicula = Pelicula.objects.create(
-                titulo=request.data.get('titulo'),
-                duracion=request.data.get('duracion'),
-                fecha_estreno=request.data.get('fecha_estreno'),
-                precio=request.data.get('precio'),
-                disponible=request.data.get('disponible', True)
-            )
-            data = {
-                'id': pelicula.id,
-                'titulo': pelicula.titulo,
-                'duracion': pelicula.duracion,
-                'fecha_estreno': pelicula.fecha_estreno,
-                'precio': str(pelicula.precio),
-                'disponible': pelicula.disponible
-            }
-            return Response(data, status=status.HTTP_201_CREATED)
-        except Exception as e:
-            return Response(
-                {'error': str(e)},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+        """POST - crea una nueva pelicula"""
+        serializer = PeliculaSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class PeliculaDetailAPIView(APIView):
     def get(self, request, pk):
+        """GET detalle - devuelve una pelicula por id"""
         try:
             pelicula = Pelicula.objects.get(pk=pk)
-            data = {
-                'id': pelicula.id,
-                'titulo': pelicula.titulo,
-                'duracion': pelicula.duracion,
-                'fecha_estreno': pelicula.fecha_estreno,
-                'precio': str(pelicula.precio),
-                'disponible': pelicula.disponible
-            }
-            return Response(data)
+            serializer = PeliculaSerializer(pelicula)
+            return Response(serializer.data)
         except Pelicula.DoesNotExist:
             return Response(
                 {'error': 'Pelicula no encontrada'},
