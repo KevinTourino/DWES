@@ -1,8 +1,12 @@
 ﻿from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, viewsets
-from .models import Pelicula, Usuario
-from .serializers import PeliculaSerializer, UsuarioSerializer
+from .models import Pelicula, Usuario, Perfil, Genero, PeliculaGenero, Resena, Visualizacion
+from .serializers import (
+    PeliculaSerializer, UsuarioSerializer, PerfilSerializer,
+    GeneroSerializer, PeliculaGeneroSerializer, ResenaSerializer,
+    VisualizacionSerializer
+)
 
 
 # ===== APIVIEW (Bloque 2) =====
@@ -33,7 +37,7 @@ class PeliculaDetailAPIView(APIView):
             )
 
 
-# ===== VIEWSETS (Bloque 3) =====
+# ===== VIEWSETS (Bloque 3 y 4) =====
 class PeliculaViewSet(viewsets.ModelViewSet):
     queryset = Pelicula.objects.all()
     serializer_class = PeliculaSerializer
@@ -42,3 +46,28 @@ class PeliculaViewSet(viewsets.ModelViewSet):
 class UsuarioViewSet(viewsets.ModelViewSet):
     queryset = Usuario.objects.all()
     serializer_class = UsuarioSerializer
+
+
+class PerfilViewSet(viewsets.ModelViewSet):
+    queryset = Perfil.objects.all()
+    serializer_class = PerfilSerializer
+
+
+class GeneroViewSet(viewsets.ModelViewSet):
+    queryset = Genero.objects.all()
+    serializer_class = GeneroSerializer
+
+
+class PeliculaGeneroViewSet(viewsets.ModelViewSet):
+    queryset = PeliculaGenero.objects.all()
+    serializer_class = PeliculaGeneroSerializer
+
+
+class ResenaViewSet(viewsets.ModelViewSet):
+    queryset = Resena.objects.all()
+    serializer_class = ResenaSerializer
+
+
+class VisualizacionViewSet(viewsets.ModelViewSet):
+    queryset = Visualizacion.objects.all()
+    serializer_class = VisualizacionSerializer
