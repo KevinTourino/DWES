@@ -1,1 +1,5 @@
-__pycache__/  *.pyc  *.pyo  .venv/  .venv1/  db.sqlite3 
+__pycache__/
+*.pyc
+*.pyo
+db.sqlite3
+.venv1/
