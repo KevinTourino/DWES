@@ -17,7 +17,6 @@ class PerfilSerializer(serializers.ModelSerializer):
 
 # ===== RELACIÓN 1:1 (Usuario <-> Perfil) =====
 class UsuarioSerializer(serializers.ModelSerializer):
-    # Patrón mixto: escritura con ID, lectura con objeto completo
     perfil_id = serializers.PrimaryKeyRelatedField(
         queryset=Perfil.objects.all(),
         source='perfil',
@@ -68,10 +67,7 @@ class PeliculaGeneroSerializer(serializers.ModelSerializer):
 
 # ===== SERIALIZER DE PELICULA CON RELACIONES =====
 class PeliculaSerializer(serializers.ModelSerializer):
-    # Relación 1:N - Mostrar reseñas de la película
     resenas = ResenaSerializer(many=True, read_only=True, source='resena_set')
-    
-    # Relación N:M con modelo intermedio
     generos_detalle = PeliculaGeneroSerializer(
         many=True, 
         read_only=True, 
@@ -84,8 +80,41 @@ class PeliculaSerializer(serializers.ModelSerializer):
                   'disponible', 'resenas', 'generos_detalle']
 
 
-# ===== RELACIÓN N:M SIMPLE (sin patrón mixto para comparar) =====
+# ===== RELACIÓN N:M SIMPLE =====
 class VisualizacionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Visualizacion
         fields = ['id', 'usuario', 'pelicula', 'fecha_visualizacion', 'minutos_vistos']
+
+
+# ===== SERIALIZERS PARA ACCIONES DE NEGOCIO =====
+
+# Serializer para marcar película como vista
+class MarcarVistaSerializer(serializers.Serializer):
+    minutos_vistos = serializers.IntegerField(min_value=1)
+    fecha_visualizacion = serializers.DateField(required=False)
+    
+    def validate_minutos_vistos(self, value):
+        pelicula = self.context.get('pelicula')
+        if pelicula and value > pelicula.duracion:
+            raise serializers.ValidationError(
+                f"Los minutos vistos ({value}) no pueden superar la duracion de la pelicula ({pelicula.duracion})"
+            )
+        return value
+
+
+# Serializer para cambiar precio
+class CambioPrecioSerializer(serializers.Serializer):
+    nuevo_precio = serializers.DecimalField(max_digits=6, decimal_places=2, min_value=0)
+    motivo = serializers.CharField(max_length=200, required=False)
+
+
+# Serializer para añadir reseña desde la película
+class AgregarResenaSerializer(serializers.Serializer):
+    puntuacion = serializers.IntegerField(min_value=1, max_value=5)
+    comentario = serializers.CharField(max_length=255)
+    
+    def validate_puntuacion(self, value):
+        if value < 1 or value > 5:
+            raise serializers.ValidationError("La puntuacion debe estar entre 1 y 5")
+        return value
