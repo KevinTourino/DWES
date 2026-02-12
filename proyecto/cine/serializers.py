@@ -2,7 +2,7 @@
 from .models import Pelicula, Usuario, Perfil, Genero, PeliculaGenero, Resena, Visualizacion
 
 
-# ===== SERIALIZERS BÁSICOS =====
+# ===== SERIALIZERS BASICOS =====
 class GeneroSerializer(serializers.ModelSerializer):
     class Meta:
         model = Genero
@@ -15,7 +15,7 @@ class PerfilSerializer(serializers.ModelSerializer):
         fields = ['id', 'usuario', 'avatar', 'idioma']
 
 
-# ===== RELACIÓN 1:1 (Usuario <-> Perfil) =====
+# ===== RELACION 1:1 (Usuario <-> Perfil) =====
 class UsuarioSerializer(serializers.ModelSerializer):
     perfil_id = serializers.PrimaryKeyRelatedField(
         queryset=Perfil.objects.all(),
@@ -32,7 +32,7 @@ class UsuarioSerializer(serializers.ModelSerializer):
         read_only_fields = ['created_at', 'updated_at']
 
 
-# ===== RELACIÓN 1:N (Pelicula -> Resenas) =====
+# ===== RELACION 1:N (Pelicula -> Resenas) =====
 class ResenaSerializer(serializers.ModelSerializer):
     usuario_id = serializers.PrimaryKeyRelatedField(
         queryset=Usuario.objects.all(),
@@ -54,7 +54,7 @@ class ResenaSerializer(serializers.ModelSerializer):
                   'puntuacion', 'comentario', 'fecha']
 
 
-# ===== RELACIÓN N:M CON MODELO INTERMEDIO (Pelicula <-> Genero) =====
+# ===== RELACION N:M CON MODELO INTERMEDIO (Pelicula <-> Genero) =====
 class PeliculaGeneroSerializer(serializers.ModelSerializer):
     genero_nombre = serializers.CharField(source='genero.nombre', read_only=True)
     pelicula_titulo = serializers.CharField(source='pelicula.titulo', read_only=True)
@@ -80,7 +80,7 @@ class PeliculaSerializer(serializers.ModelSerializer):
                   'disponible', 'resenas', 'generos_detalle']
 
 
-# ===== RELACIÓN N:M SIMPLE =====
+# ===== RELACION N:M SIMPLE =====
 class VisualizacionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Visualizacion
@@ -88,8 +88,6 @@ class VisualizacionSerializer(serializers.ModelSerializer):
 
 
 # ===== SERIALIZERS PARA ACCIONES DE NEGOCIO =====
-
-# Serializer para marcar película como vista
 class MarcarVistaSerializer(serializers.Serializer):
     minutos_vistos = serializers.IntegerField(min_value=1)
     fecha_visualizacion = serializers.DateField(required=False)
@@ -103,13 +101,11 @@ class MarcarVistaSerializer(serializers.Serializer):
         return value
 
 
-# Serializer para cambiar precio
 class CambioPrecioSerializer(serializers.Serializer):
     nuevo_precio = serializers.DecimalField(max_digits=6, decimal_places=2, min_value=0)
     motivo = serializers.CharField(max_length=200, required=False)
 
 
-# Serializer para añadir reseña desde la película
 class AgregarResenaSerializer(serializers.Serializer):
     puntuacion = serializers.IntegerField(min_value=1, max_value=5)
     comentario = serializers.CharField(max_length=255)

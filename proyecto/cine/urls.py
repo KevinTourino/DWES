@@ -2,9 +2,9 @@
 from rest_framework.routers import DefaultRouter
 from .views import (
     PeliculaListAPIView, PeliculaDetailAPIView,
-    PeliculaViewSet, UsuarioViewSet, PerfilViewSet,
-    GeneroViewSet, PeliculaGeneroViewSet, ResenaViewSet,
-    VisualizacionViewSet
+    PeliculaViewSet, UsuarioViewSet,
+    PerfilViewSet, GeneroViewSet, PeliculaGeneroViewSet,
+    ResenaViewSet, VisualizacionViewSet
 )
 
 # Router para ViewSets
@@ -18,10 +18,10 @@ router.register('resenas', ResenaViewSet, basename='resena')
 router.register('visualizaciones', VisualizacionViewSet, basename='visualizacion')
 
 urlpatterns = [
-    # APIView (Bloque 2)
+    # APIView
     path('api/peliculas/', PeliculaListAPIView.as_view(), name='pelicula-list'),
     path('api/peliculas/<int:pk>/', PeliculaDetailAPIView.as_view(), name='pelicula-detail'),
-    
-    # ViewSets (Bloque 3 y 4)
+
+    # ViewSets
     path('api/', include(router.urls)),
 ]

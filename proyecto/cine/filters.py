@@ -1,53 +1,38 @@
-﻿import django_filters
+import django_filters
 from .models import Pelicula, Resena, Usuario
 
 
 class PeliculaFilter(django_filters.FilterSet):
-    # Filtros simples por campos exactos
-    disponible = django_filters.BooleanFilter()
-    
-    # Filtros avanzados - Rango de precios
+    titulo = django_filters.CharFilter(lookup_expr='icontains')
     precio_min = django_filters.NumberFilter(field_name='precio', lookup_expr='gte')
     precio_max = django_filters.NumberFilter(field_name='precio', lookup_expr='lte')
-    
-    # Filtros avanzados - Rango de fechas
+    disponible = django_filters.BooleanFilter(field_name='disponible')
     fecha_desde = django_filters.DateFilter(field_name='fecha_estreno', lookup_expr='gte')
     fecha_hasta = django_filters.DateFilter(field_name='fecha_estreno', lookup_expr='lte')
-    
-    # Filtros avanzados - Duración mínima/máxima
-    duracion_min = django_filters.NumberFilter(field_name='duracion', lookup_expr='gte')
-    duracion_max = django_filters.NumberFilter(field_name='duracion', lookup_expr='lte')
-    
+
     class Meta:
         model = Pelicula
-        fields = ['disponible']
+        fields = ['titulo', 'disponible', 'precio_min', 'precio_max']
 
 
 class ResenaFilter(django_filters.FilterSet):
-    # Filtro simple
-    puntuacion = django_filters.NumberFilter()
-    
-    # Filtro avanzado - Puntuación mínima/máxima
     puntuacion_min = django_filters.NumberFilter(field_name='puntuacion', lookup_expr='gte')
     puntuacion_max = django_filters.NumberFilter(field_name='puntuacion', lookup_expr='lte')
-    
-    # Filtro por rango de fechas
-    fecha_desde = django_filters.DateFilter(field_name='fecha', lookup_expr='gte')
-    fecha_hasta = django_filters.DateFilter(field_name='fecha', lookup_expr='lte')
-    
+    pelicula = django_filters.NumberFilter(field_name='pelicula__id')
+    usuario = django_filters.NumberFilter(field_name='usuario__id')
+
     class Meta:
         model = Resena
-        fields = ['puntuacion', 'usuario', 'pelicula']
+        fields = ['pelicula', 'usuario', 'puntuacion_min', 'puntuacion_max']
 
 
 class UsuarioFilter(django_filters.FilterSet):
-    # Filtro simple
-    activo = django_filters.BooleanFilter()
-    
-    # Filtro avanzado - Rango de edad
+    username = django_filters.CharFilter(lookup_expr='icontains')
+    email = django_filters.CharFilter(lookup_expr='icontains')
+    activo = django_filters.BooleanFilter(field_name='activo')
     edad_min = django_filters.NumberFilter(field_name='edad', lookup_expr='gte')
     edad_max = django_filters.NumberFilter(field_name='edad', lookup_expr='lte')
-    
+
     class Meta:
         model = Usuario
-        fields = ['activo']
+        fields = ['username', 'email', 'activo']

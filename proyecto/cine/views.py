@@ -2,9 +2,11 @@
 from rest_framework.response import Response
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticated, AllowAny, IsAuthenticatedOrReadOnly
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from django.utils import timezone
+from django.contrib.auth.models import User
 from .models import Pelicula, Usuario, Perfil, Genero, PeliculaGenero, Resena, Visualizacion
 from .serializers import (
     PeliculaSerializer, UsuarioSerializer, PerfilSerializer,
@@ -13,10 +15,13 @@ from .serializers import (
     AgregarResenaSerializer
 )
 from .filters import PeliculaFilter, ResenaFilter, UsuarioFilter
+from .permissions import IsAuthenticatedForWrite
 
 
 # ===== APIVIEW (Bloque 2) =====
 class PeliculaListAPIView(APIView):
+    permission_classes = [AllowAny]  # Público
+    
     def get(self, request):
         peliculas = Pelicula.objects.all()
         serializer = PeliculaSerializer(peliculas, many=True)
@@ -31,6 +36,8 @@ class PeliculaListAPIView(APIView):
 
 
 class PeliculaDetailAPIView(APIView):
+    permission_classes = [AllowAny]  # Público
+    
     def get(self, request, pk):
         try:
             pelicula = Pelicula.objects.get(pk=pk)
@@ -43,8 +50,13 @@ class PeliculaDetailAPIView(APIView):
             )
 
 
-# ===== VIEWSETS CON ACCIONES DE NEGOCIO =====
+# ===== VIEWSETS CON PROTECCIÓN JWT =====
 class PeliculaViewSet(viewsets.ModelViewSet):
+    """
+    ViewSet de películas:
+    - GET (lista/detalle): Público
+    - POST/PUT/PATCH/DELETE: Requiere autenticación
+    """
     queryset = Pelicula.objects.all()
     serializer_class = PeliculaSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
@@ -52,14 +64,11 @@ class PeliculaViewSet(viewsets.ModelViewSet):
     search_fields = ['titulo', 'precio']
     ordering_fields = ['titulo', 'fecha_estreno', 'precio', 'duracion']
     ordering = ['titulo']
+    permission_classes = [IsAuthenticatedOrReadOnly]  # Lectura pública, escritura autenticada
     
-    # ACCIÓN 1: Marcar película como no disponible (detail=True)
-    @action(detail=True, methods=['post'])
+    @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated])
     def marcar_no_disponible(self, request, pk=None):
-        """
-        Marca una película como no disponible.
-        POST /api/peliculas-viewset/{id}/marcar_no_disponible/
-        """
+        """PROTEGIDA: Solo usuarios autenticados"""
         pelicula = self.get_object()
         
         if not pelicula.disponible:
@@ -77,14 +86,9 @@ class PeliculaViewSet(viewsets.ModelViewSet):
             'pelicula': serializer.data
         })
     
-    # ACCIÓN 2: Cambiar precio con validación (detail=True)
-    @action(detail=True, methods=['post'])
+    @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated])
     def cambiar_precio(self, request, pk=None):
-        """
-        Cambia el precio de una película.
-        POST /api/peliculas-viewset/{id}/cambiar_precio/
-        Body: {"nuevo_precio": "15.99", "motivo": "Oferta especial"}
-        """
+        """PROTEGIDA: Solo usuarios autenticados"""
         pelicula = self.get_object()
         serializer = CambioPrecioSerializer(data=request.data)
         
@@ -102,13 +106,9 @@ class PeliculaViewSet(viewsets.ModelViewSet):
             'motivo': serializer.validated_data.get('motivo', 'Sin motivo especificado')
         })
     
-    # ACCIÓN 3: Obtener estadísticas (detail=True)
-    @action(detail=True, methods=['get'])
+    @action(detail=True, methods=['get'], permission_classes=[AllowAny])
     def estadisticas(self, request, pk=None):
-        """
-        Obtiene estadísticas de una película.
-        GET /api/peliculas-viewset/{id}/estadisticas/
-        """
+        """PÚBLICA: Cualquiera puede ver estadísticas"""
         pelicula = self.get_object()
         
         resenas = Resena.objects.filter(pelicula=pelicula)
@@ -127,13 +127,9 @@ class PeliculaViewSet(viewsets.ModelViewSet):
             'minutos_totales_vistos': sum(v.minutos_vistos for v in visualizaciones)
         })
     
-    # ACCIÓN 4: Películas destacadas (detail=False - colección)
-    @action(detail=False, methods=['get'])
+    @action(detail=False, methods=['get'], permission_classes=[AllowAny])
     def destacadas(self, request):
-        """
-        Obtiene películas con puntuación promedio >= 4.
-        GET /api/peliculas-viewset/destacadas/
-        """
+        """PÚBLICA: Cualquiera puede ver películas destacadas"""
         peliculas_destacadas = []
         
         for pelicula in Pelicula.objects.filter(disponible=True):
@@ -152,6 +148,11 @@ class PeliculaViewSet(viewsets.ModelViewSet):
 
 
 class UsuarioViewSet(viewsets.ModelViewSet):
+    """
+    ViewSet de usuarios:
+    - GET: Público
+    - POST/PUT/PATCH/DELETE: Requiere autenticación
+    """
     queryset = Usuario.objects.all()
     serializer_class = UsuarioSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
@@ -159,18 +160,13 @@ class UsuarioViewSet(viewsets.ModelViewSet):
     search_fields = ['username', 'email']
     ordering_fields = ['username', 'edad', 'created_at']
     ordering = ['username']
+    permission_classes = [IsAuthenticatedOrReadOnly]
     
-    # ACCIÓN: Marcar película como vista (detail=True)
-    @action(detail=True, methods=['post'])
+    @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated])
     def marcar_vista(self, request, pk=None):
-        """
-        Registra que un usuario vio una película.
-        POST /api/usuarios/{id}/marcar_vista/
-        Body: {"pelicula_id": 1, "minutos_vistos": 120, "fecha_visualizacion": "2024-02-09"}
-        """
+        """PROTEGIDA: Solo usuarios autenticados pueden marcar visualizaciones"""
         usuario = self.get_object()
         
-        # Obtener pelicula_id del body
         pelicula_id = request.data.get('pelicula_id')
         if not pelicula_id:
             return Response(
@@ -215,13 +211,9 @@ class UsuarioViewSet(viewsets.ModelViewSet):
             'visualizacion': VisualizacionSerializer(visualizacion).data
         }, status=status.HTTP_201_CREATED)
     
-    # ACCIÓN: Historial de visualizaciones (detail=True)
-    @action(detail=True, methods=['get'])
+    @action(detail=True, methods=['get'], permission_classes=[AllowAny])
     def historial(self, request, pk=None):
-        """
-        Obtiene el historial de películas vistas por el usuario.
-        GET /api/usuarios/{id}/historial/
-        """
+        """PÚBLICA: Cualquiera puede ver el historial"""
         usuario = self.get_object()
         visualizaciones = Visualizacion.objects.filter(usuario=usuario).order_by('-fecha_visualizacion')
         
@@ -235,14 +227,17 @@ class UsuarioViewSet(viewsets.ModelViewSet):
 class PerfilViewSet(viewsets.ModelViewSet):
     queryset = Perfil.objects.all()
     serializer_class = PerfilSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 
 class GeneroViewSet(viewsets.ModelViewSet):
+    """Géneros: Lectura pública, escritura protegida"""
     queryset = Genero.objects.all()
     serializer_class = GeneroSerializer
     filter_backends = [SearchFilter, OrderingFilter]
     search_fields = ['nombre']
     ordering_fields = ['nombre']
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 
 class PeliculaGeneroViewSet(viewsets.ModelViewSet):
@@ -251,9 +246,11 @@ class PeliculaGeneroViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_fields = ['pelicula', 'genero']
     ordering_fields = ['orden', 'fecha_asignacion']
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 
 class ResenaViewSet(viewsets.ModelViewSet):
+    """Reseñas: Lectura pública, escritura protegida"""
     queryset = Resena.objects.all()
     serializer_class = ResenaSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
@@ -261,6 +258,7 @@ class ResenaViewSet(viewsets.ModelViewSet):
     search_fields = ['comentario']
     ordering_fields = ['fecha', 'puntuacion']
     ordering = ['-fecha']
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 
 class VisualizacionViewSet(viewsets.ModelViewSet):
@@ -269,3 +267,4 @@ class VisualizacionViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_fields = ['usuario', 'pelicula']
     ordering_fields = ['fecha_visualizacion', 'minutos_vistos']
+    permission_classes = [IsAuthenticatedOrReadOnly]
