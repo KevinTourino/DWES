@@ -1,0 +1,82 @@
+.library-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+}
+
+.library-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.library-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0;
+    color: #e6e7f0;
+}
+
+.library-subtitle {
+    font-size: 14px;
+    margin: 4px 0 0 0;
+    color: #b6afef;
+}
+
+.btn-add, .filter-btn {
+    background-color: #0f0f1a;
+    color: #e6e7f0;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-add:hover {
+    background-color: #212b38;
+}
+
+
+
+.filter {
+    width: 95%;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    gap: 50px;
+    padding: 15px;
+    border-radius: 10px;
+    background-color: #18182b;
+}
+
+/* Esto es lo importante */
+.search-box {
+    flex: 1;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 0.7rem 0.8rem;
+    border: 1px solid rgba(124, 58, 237, 0.3);
+    background: #111126;
+    color: #e0e7ff;
+    border-radius: 8px;
+    outline: none;
+    font-size: 0.95rem;
+    transition: 0.2s ease;
+}
+
+.search-box input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.filter-btn{
+    background-color: #6c5ce7;
+    color: #ffffff;
+}
+
+.filter-btn:hover {
+    background: #5a4bd6;
+}
