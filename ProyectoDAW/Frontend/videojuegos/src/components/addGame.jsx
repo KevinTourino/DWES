@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import '../css/cards.css'
 import Games from "./Game";
 import axios from "axios";
 
@@ -47,12 +48,14 @@ const AddGames = () => {
                 <input type="text" value={gameName} onChange={(e) => setGameName(e.target.value)} placeholder="Buscar juego" />
                 <button type="submit">Juego</button>
             </form>
-
-            {results.length > 0 ? 
-                (<Games results={results} />) 
-                : 
-                (<p>No hay resultados aún</p>)
-            }
+            <div className="card-list">
+                {results.length > 0 ? 
+                    (<Games results={results} />) 
+                    : 
+                    (<p>No hay resultados aún</p>)
+                }
+            </div>
+            
         </div>
     )
 }

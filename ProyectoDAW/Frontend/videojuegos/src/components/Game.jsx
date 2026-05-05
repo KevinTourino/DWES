@@ -1,6 +1,6 @@
 const Games = ({ results }) => {
     return (
-        <div>
+        <div className="cards">
             {results.map((game) => (
                 <div key={game.id} style={{ marginBottom: "20px" }}>
                     <h2>{game.name}</h2>

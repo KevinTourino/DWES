@@ -1,0 +1,55 @@
+.cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.card-list {
+    padding: 20px;
+    background: #0f172a;
+}
+
+.cards > div {
+    background: #1e293b;
+    border-radius: 12px;
+    padding: 16px;
+    color: #e2e8f0;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.cards > div:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+}
+
+.cards h2 {
+    font-size: 1.2rem;
+    margin: 0;
+    color: #f8fafc;
+}
+
+.cards p {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    color: #cbd5e1;
+}
+
+/* Imagen del juego */
+.cards img {
+    width: 100%;
+    max-width: 150px;
+    border-radius: 8px;
+    align-self: center;
+}
+
+/* separadores visuales opcionales */
+.cards p:nth-of-type(2),
+.cards p:nth-of-type(3) {
+    font-weight: 500;
+    color: #94a3b8;
+}
