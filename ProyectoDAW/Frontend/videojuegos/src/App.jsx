@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import { BrowserRouter, Routes, Route } from "react-router-dom"
-import Home from './components/home'
+import Home from './components/Home'
 import Login from './components/auth/login'
 import Layout from './components/layaout/Layout'
-import Library from './components/library'
-import AddGames from './components/addGame'
-import NotFound from './components/notfound'
+import Library from './components/Library'
+import AddGames from './components/AddGame'
+import NotFound from './components/NotFound'
 import './App.css'
 
 function App() {

@@ -1,47 +1,58 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Games from "./Game";
 import axios from "axios";
 
 const AddGames = () => {
 
-    const [token, setToken] = useState(null);
+    const [gameName, setGameName] = useState("");
+    const [oldGame, setOldGame] = useState({});
+    const [results, setResults] = useState([]);
 
-    useEffect(() => {
-        axios.post(
-            "https://id.twitch.tv/oauth2/token",
-            null,
-            {
-                params: {
-                client_id: "58tr57drw2hmvl2jdqdwsv0zwqv5m1",
-                client_secret: "bt148hr1kd3em4bzgjo3dp26zg7ed9",
-                grant_type: "client_credentials",
-                },
-            }
-            ).then(response => {
-            setToken(response.data.access_token);
-            console.log(response.data.access_token);
-            }).catch(error => {
-            console.error(error);
-        });
-    }, []);
+    const handleSubmit = async (e) => {
+         e.preventDefault();
 
-    const games = () => {
-        console.log("Games")
-        axios.post(
-        "https://api.igdb.com/v4/games",
-        'search "Zelda"; fields name, rating;',
-            {
-                headers: {
-                "Client-ID": "58tr57drw2hmvl2jdqdwsv0zwqv5m1",
-                "Authorization": `Bearer ${token}`,
-                },
-            }
-        );
+        const name = gameName.trim();
+
+        if (name.length === 0) {
+            setResults([]);
+            return;
+        }
+
+        if (oldGame[name]) {
+            setResults(oldGame[name]);
+            return;
+        }
+
+        try {
+            const res = await axios.get(
+                `http://localhost:8000/games/?name=${name}`
+            );
+
+            setResults(res.data);
+
+            setOldGame((prev) => ({
+                ...prev,
+                [name]: res.data
+            }));
+
+        } catch (error) {
+            console.error("Error fetching games:", error);
+        }
     };
 
     return (
         <div>
-            <button onClick={games}>Juego</button>
+            <form onSubmit={handleSubmit}>
+                <input type="text" value={gameName} onChange={(e) => setGameName(e.target.value)} placeholder="Buscar juego" />
+                <button type="submit">Juego</button>
+            </form>
+
+            {results.length > 0 ? 
+                (<Games results={results} />) 
+                : 
+                (<p>No hay resultados aún</p>)
+            }
         </div>
     )
 }
