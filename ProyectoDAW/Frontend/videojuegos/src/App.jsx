@@ -5,6 +5,7 @@ import Login from './components/auth/login'
 import Layout from './components/layaout/Layout'
 import Library from './components/Library'
 import AddGames from './components/AddGame'
+import GameDetail from './components/GameDetail'
 import NotFound from './components/NotFound'
 import './App.css'
 
@@ -17,6 +18,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/library" element={<Library />} />
           <Route path="/addGame" element={<AddGames />} />
+          <Route path="/game/:id" element={<GameDetail />} />
 
           <Route path="*" element={<NotFound />} />
         </Route>

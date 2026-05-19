@@ -27,7 +27,7 @@ def fetch_igdb_games(game_name):
     query = f'''
     fields name, rating, summary, first_release_date, cover.url, genres.name, platforms.name;
     search "{game_name}";
-    limit 10;
+    limit 12;
     '''
     r = requests.post(url, headers=headers, data=query)
     return r.json()

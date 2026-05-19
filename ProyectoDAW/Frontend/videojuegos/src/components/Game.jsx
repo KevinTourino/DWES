@@ -1,8 +1,13 @@
+import { useNavigate } from "react-router-dom";
+
 const Games = ({ results }) => {
+
+    const navigate = useNavigate();
+
     return (
         <div className="cards">
             {results.map((game) => (
-                <div key={game.id} style={{ marginBottom: "20px" }}>
+                <div key={game.id} style={{ marginBottom: "20px" }} onClick={() => navigate(`/game/${game.id}`, {state: { game }})}>
                     <h2>{game.name}</h2>
 
                     <p>{game.summary}</p>
@@ -15,10 +20,10 @@ const Games = ({ results }) => {
 
                     {game.cover && (
                         <img
-                            src={game.cover.url}
-                            alt={game.name}
-                            width="150"
-                        />
+    src={`https:${game.cover.url.replace("t_thumb", "t_cover_big")}`}
+    alt={game.name}
+    width="250"
+  />
                     )}
 
                     <p>
