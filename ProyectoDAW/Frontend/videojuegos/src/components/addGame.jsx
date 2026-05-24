@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom"
 import '../css/cards.css'
 import Games from "./Game";
 import axios from "axios";
@@ -9,6 +10,16 @@ const AddGames = () => {
     const [gameName, setGameName] = useState("");
     const [oldGame, setOldGame] = useState({});
     const [results, setResults] = useState([]);
+
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        const token = sessionStorage.getItem("access")
+
+        if (!token) {
+            navigate("/login")
+        }
+    }, [navigate])
 
     const handleSubmit = async (e) => {
          e.preventDefault();

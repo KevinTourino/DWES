@@ -1,5 +1,33 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.conf import settings
+
+
+class Biblioteca(models.Model):
+    usuario = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
+
+    videojuego = models.ForeignKey(
+        'Videojuego',
+        on_delete=models.CASCADE
+    )
+
+    fecha_compra = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['usuario', 'videojuego'],
+                name='unique_usuario_videojuego'
+            )
+        ]
+        indexes = [
+            models.Index(fields=['usuario']),
+        ]
+
+    def __str__(self):
+        return f"{self.usuario} - {self.videojuego}"
 
 class Plataforma(models.Model):
     nombre = models.CharField(max_length=100, unique=True)
@@ -19,6 +47,12 @@ class Videojuego(models.Model):
     # Relación N:M con tabla intermedia
     plataformas = models.ManyToManyField(Plataforma, through='VideojuegoPlataforma')
 
+
+    indexes = [
+        models.Index(fields=['videojuego']),
+        models.Index(fields=['plataforma']),
+    ]
+    
     def __str__(self):
         return self.titulo
 
@@ -26,8 +60,8 @@ class Videojuego(models.Model):
 class VideojuegoPlataforma(models.Model):
     """Tabla intermedia (through)"""
 
+    plataforma = models.ForeignKey(Plataforma, on_delete=models.PROTECT)
     videojuego = models.ForeignKey(Videojuego, on_delete=models.CASCADE)
-    plataforma = models.ForeignKey(Plataforma, on_delete=models.CASCADE)
 
     fecha_lanzamiento = models.DateField()
     version = models.CharField(max_length=50, blank=True)
@@ -43,9 +77,3 @@ class VideojuegoPlataforma(models.Model):
 
     def __str__(self):
         return f"{self.videojuego} en {self.plataforma}"
-
-class Biblioteca(models.Model):
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
-    videojuego = models.ForeignKey(Videojuego, on_delete=models.CASCADE)
-
-    fecha_compra = models.DateTimeField(auto_now_add=True)

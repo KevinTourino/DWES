@@ -5,10 +5,10 @@ import '../css/library.css';
 
 const Library = () => {
 
-    const [totalGames, setTotalGames] = useState("2");
+    const [totalGames, setTotalGames] = useState(5);
 
     const onTotalGames = (e) => {
-    setTotalGames(e.target.value);
+        setTotalGames(e.target.value);
     }
 
     return (
