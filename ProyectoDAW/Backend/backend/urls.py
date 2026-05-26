@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from videojuegos.views import games_view
+from videojuegos.views import games_view, game_detail_view
 from videojuegos.views import RegisterView
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -26,6 +26,7 @@ from rest_framework_simplejwt.views import (
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('games/', games_view),
+    path("games/<int:id>/", game_detail_view),
     path('register/', RegisterView.as_view()),
     path('api/token/', TokenObtainPairView.as_view()),
     path('api/token/refresh/', TokenRefreshView.as_view()),

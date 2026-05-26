@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-from .service import fetch_igdb_games
+from .service import fetch_igdb_games, fetch_igdb_games_id
 
 from django.contrib.auth.models import User
 from rest_framework import generics
@@ -12,6 +12,10 @@ def games_view(request):
     game_name = request.GET.get("name", "Zelda")
 
     data = fetch_igdb_games(game_name)
+    return JsonResponse(data, safe=False)
+
+def game_detail_view(request, id):
+    data = fetch_igdb_games_id(id)
     return JsonResponse(data, safe=False)
 
 

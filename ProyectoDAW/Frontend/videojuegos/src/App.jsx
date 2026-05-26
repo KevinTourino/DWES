@@ -16,12 +16,10 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           
-          {/* públicas */}
           <Route index element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
 
-          {/* privadas */}
           <Route
             path="/library"
             element={

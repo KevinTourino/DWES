@@ -1,0 +1,116 @@
+/* CONTAINER GENERAL */
+.gameDetailContainer {
+    min-height: 70vh;
+    margin-top: 30px;
+    background: #0f1020;
+    padding: 40px;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* CARD */
+.gameDetailCard {
+    background: #15162c;
+    border-radius: 20px;
+    padding: 30px;
+    border: 1px solid rgba(120, 100, 255, 0.15);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+/* TITLE */
+.gameTitle {
+    font-size: 42px;
+    margin-bottom: 30px;
+    color: white;
+}
+
+/* MAIN LAYOUT */
+.gameMain {
+    display: flex;
+    gap: 35px;
+    align-items: flex-start;
+}
+
+/* LEFT SIDE */
+.gameLeft {
+    flex: 0 0 260px;
+}
+
+.gameCover {
+    width: 100%;
+    border-radius: 18px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+}
+
+/* RIGHT SIDE */
+.gameRight {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* DESCRIPTION */
+.gameSummary {
+    color: #c9c9dd;
+    line-height: 1.8;
+    font-size: 15px;
+    margin-bottom: 25px;
+}
+
+/* INFO ROW */
+.gameInfoGrid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+}
+
+/* INFO CARD */
+.infoBox {
+    background: #0f1020;
+    border: 1px solid rgba(120, 100, 255, 0.15);
+    border-radius: 14px;
+    padding: 18px;
+    min-height: 90px;
+    margin-top: 15px;
+}
+
+/* LABEL */
+.infoBox span {
+    display: block;
+    font-size: 13px;
+    color: #8f90b5;
+    margin-bottom: 8px;
+}
+
+/* VALUE */
+.infoBox p {
+    color: white;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.platformTag {
+    background: rgba(120, 100, 255, 0.15);
+    border: 1px solid rgba(120, 100, 255, 0.3);
+    color: #d7d7ff;
+    margin-right: 5px;
+
+    padding: 8px 14px;
+    border-radius: 999px;
+
+    font-size: 13px;
+    cursor: pointer;
+
+    transition: 0.2s;
+
+    outline: none;
+}
+
+.platformTag:hover {
+    background: rgba(120, 100, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+.platformTag:active {
+    transform: scale(0.97);
+}

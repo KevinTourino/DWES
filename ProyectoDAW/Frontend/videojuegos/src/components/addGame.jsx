@@ -10,6 +10,7 @@ const AddGames = () => {
     const [gameName, setGameName] = useState("");
     const [oldGame, setOldGame] = useState({});
     const [results, setResults] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     const navigate = useNavigate()
 
@@ -31,8 +32,11 @@ const AddGames = () => {
             return;
         }
 
+        setLoading(true);
+
         if (oldGame[name]) {
             setResults(oldGame[name]);
+            setLoading(false);
             return;
         }
 
@@ -50,21 +54,39 @@ const AddGames = () => {
 
         } catch (error) {
             console.error("Error fetching games:", error);
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
         <div>
-            <form onSubmit={handleSubmit}>
-                <input type="text" value={gameName} onChange={(e) => setGameName(e.target.value)} placeholder="Buscar juego" />
-                <button type="submit">Juego</button>
-            </form>
+            <div className="search-container">
+                <form className="search-form" onSubmit={handleSubmit}>
+                    <div className="search-group">
+                        <input
+                            id="gameName"
+                            type="text"
+                            value={gameName}
+                            onChange={(e) => setGameName(e.target.value)}
+                            placeholder="Buscar juego"
+                            className="search-input"
+                        />
+                    </div>
+
+                    <button type="submit" className="search-btn">
+                    Juego
+                    </button>
+                </form>
+            </div>
             <div className="card-list">
-                {results.length > 0 ? 
-                    (<Games results={results} />) 
-                    : 
-                    (<p>No hay resultados aún</p>)
-                }
+                {loading ? (
+                    <p className="informacion">Procesando petición...</p>
+                ) : results.length > 0 ? (
+                    <Games results={results} />
+                ) : (
+                    <p className="informacion">No hay resultados aún</p>
+                )}
             </div>
             
         </div>

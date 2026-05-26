@@ -31,3 +31,21 @@ def fetch_igdb_games(game_name):
     '''
     r = requests.post(url, headers=headers, data=query)
     return r.json()
+
+def fetch_igdb_games_id(id):
+    token = get_twitch_token()
+
+    url = "https://api.igdb.com/v4/games"
+    headers = {
+        "Client-ID": TWITCH_CLIENT_ID,
+        "Authorization": f"Bearer {token}"
+    }
+
+    query = f'''
+    fields name, rating, summary, first_release_date, cover.url, genres.name, platforms.name;
+    where id = {id};
+    limit 1;
+    '''
+
+    r = requests.post(url, headers=headers, data=query)
+    return r.json()
