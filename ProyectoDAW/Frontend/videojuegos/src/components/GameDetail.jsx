@@ -9,6 +9,8 @@ const GameDetail = () => {
 
     const [game, setGame] = useState(null);
 
+    const [selectedPlatforms, setSelectedPlatforms] = useState([]);
+
     useEffect(() => {
         const fetchGame = async () => {
             try {
@@ -29,8 +31,76 @@ const GameDetail = () => {
         return <p className="loading">Cargando...</p>;
     }
 
+    const addPlatform = (platform) => {
+
+    const exists = selectedPlatforms.find(
+        (p) => p.name === platform.name
+    );
+
+    if (exists) return;
+
+    setSelectedPlatforms((prev) => [
+        ...prev,
+        {
+            name: platform.name,
+            owned: false,
+            status: "jugando",
+        },
+    ]);
+};
+
+    const handleOwnedChange = (index) => {
+
+    setSelectedPlatforms(
+        selectedPlatforms.map((platform, i) =>
+            i === index
+                ? { ...platform, owned: !platform.owned }
+                : platform
+        )
+    );
+};
+
+const handleStatusChange = (index, value) => {
+
+    setSelectedPlatforms(
+        selectedPlatforms.map((platform, i) =>
+            i === index
+                ? { ...platform, status: value }
+                : platform
+        )
+    );
+};
+
+
+
+const saveGameToLibrary = async () => {
+    try {
+        const token = sessionStorage.getItem("access");
+
+        await axios.post(
+            "http://localhost:8000/biblioteca/add/",
+            {
+                videojuego_id: game.id
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
+
+        alert("Juego añadido a la biblioteca");
+
+    } catch (error) {
+        console.error(error);
+    }
+};
+
     return (
         <div className="gameDetailContainer">
+            <button onClick={saveGameToLibrary}>
+    Añadir a biblioteca
+</button>
 
             <div className="gameDetailCard">
 
@@ -107,7 +177,7 @@ const GameDetail = () => {
                     </div>
 
                 </div>
-                {/* PLATFORMS */}
+
 <div className="platformSection">
 
     <div className="infoBox">
@@ -115,20 +185,65 @@ const GameDetail = () => {
 
         <div className="platformTags">
 
-            {game.platforms?.map((platform, index) => (
+    {game.platforms?.map((platform, index) => (
         <button
             key={index}
             className="platformTag"
+            onClick={() => addPlatform(platform)}
         >
             {platform.name}
         </button>
     ))}
 
-        </div>
+</div>
     </div>
 
 </div>
+<div className="platform-list">
 
+    {selectedPlatforms.map((platform, index) => (
+
+        <div
+            key={index}
+            className="platform-item"
+        >
+
+            <h3>{platform.name}</h3>
+
+            <label>
+                En Posesión
+
+                <input
+                    type="checkbox"
+                    checked={platform.owned}
+                    onChange={() => handleOwnedChange(index)}
+                />
+            </label>
+
+            <select
+                value={platform.status}
+                onChange={(e) =>
+                    handleStatusChange(index, e.target.value)
+                }
+            >
+                <option value="jugando">
+                    Jugando
+                </option>
+
+                <option value="abandonado">
+                    Abandonado
+                </option>
+
+                <option value="espera">
+                    En espera
+                </option>
+            </select>
+
+        </div>
+
+    ))}
+
+</div>
             </div>
 
         </div>

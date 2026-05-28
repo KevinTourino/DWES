@@ -23,11 +23,33 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
+from videojuegos.views import (
+    games_view,
+    game_detail_view,
+    RegisterView,
+    BibliotecaCreateView,
+    BibliotecaListView
+)
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('games/', games_view),
     path("games/<int:id>/", game_detail_view),
     path('register/', RegisterView.as_view()),
+
+
+    path(
+        "biblioteca/",
+        BibliotecaListView.as_view(),
+        name="biblioteca-list"
+    ),
+
+    path(
+        "biblioteca/add/",
+        BibliotecaCreateView.as_view(),
+        name="biblioteca-add"
+    ),
+
     path('api/token/', TokenObtainPairView.as_view()),
     path('api/token/refresh/', TokenRefreshView.as_view()),
 ]

@@ -1,7 +1,7 @@
 import requests
 
-TWITCH_CLIENT_ID = "58tr57drw2hmvl2jdqdwsv0zwqv5m1"
-TWITCH_SECRET = "c3v0jdd4nfot5kcjgaj59bgvvpvmv2"
+TWITCH_CLIENT_ID = "z6df31rwkpqbup1pkxwoy140hpyqnf"
+TWITCH_SECRET = "n5xlyk7m6ie5urju64dwv1t00vb784"
 
 
 def get_twitch_token():

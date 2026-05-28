@@ -7,6 +7,10 @@ from rest_framework import generics
 from .serializers import RegisterSerializer
 from .filters import UserFilter
 
+from rest_framework import generics, permissions
+from .models import Biblioteca
+from .serializers import BibliotecaSerializer
+
 
 def games_view(request):
     game_name = request.GET.get("name", "Zelda")
@@ -30,3 +34,34 @@ class UserListView(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = RegisterSerializer
     filterset_class = UserFilter
+
+
+
+
+
+
+
+
+
+
+
+class BibliotecaCreateView(generics.CreateAPIView):
+
+    serializer_class = BibliotecaSerializer
+
+    permission_classes = [permissions.IsAuthenticated]
+
+
+class BibliotecaListView(generics.ListAPIView):
+
+    serializer_class = BibliotecaSerializer
+
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+
+        return Biblioteca.objects.filter(
+            usuario=self.request.user
+        ).select_related(
+            "videojuego"
+        )
