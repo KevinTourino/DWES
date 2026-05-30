@@ -1,107 +1,151 @@
-# Historia Japonesa
+#  Arcade Store
+# <img width="1254" height="1254" alt="portada (2)" src="https://github.com/user-attachments/assets/c6bcb810-ffb0-4043-8484-1ac0afae94df" />
+Aplicación web para la gestión personal de colecciones de videojuegos. Permite a los usuarios registrar, organizar y realizar el seguimiento de los videojuegos que poseen, controlando su progreso, plataformas y estado de completado.
 
-![Portada](https://content-historia.nationalgeographic.com.es/medio/2021/01/20/duelo-de-samurais_4ceaf5af_1280x1020.jpg)
+##  Descripción
 
-## Insignias
+Arcade Store es una plataforma diseñada para ayudar a los aficionados a los videojuegos a gestionar su biblioteca personal de forma sencilla y centralizada.
 
-![Estado del Proyecto](https://img.shields.io/badge/Estado-Activo-green)
-![Licencia](https://img.shields.io/badge/License-MIT-blue)
+Los usuarios pueden:
 
----
+- Registrar videojuegos en su colección.
+- Consultar información detallada de cada título.
+- Gestionar el estado de progreso de los juegos.
+- Asociar juegos a diferentes plataformas.
+- Mantener un seguimiento de logros y completado.
+- Buscar videojuegos mediante una API externa.
+- Administrar su propia biblioteca de forma segura mediante autenticación.
 
-## Índice
+##  Tecnologías utilizadas
 
-1. [Descripción del Proyecto](#descripción-del-proyecto)
-2. [Estado del Proyecto](#estado-del-proyecto)
-3. [Demostración de Funciones y Aplicaciones](#demostración-de-funciones-y-aplicaciones)
-4. [Acceso al Proyecto](#acceso-al-proyecto)
-5. [Tecnologías Utilizadas](#tecnologías-utilizadas)
-6. [Personas Contribuyentes](#personas-contribuyentes)
-7. [Personas Desarrolladoras del Proyecto](#personas-desarrolladoras-del-proyecto)
-8. [Licencia](#licencia)
+### Frontend
+- React
+- React Router
+- Axios / Fetch API
+- HTML5
+- CSS3
+- JavaScript
 
----
+### Backend
+- Django
+- Django REST Framework
+- API REST
 
-## Descripción del Proyecto
+### Base de datos
+- SQLite
 
-**Historia Japonesa** es una plataforma educativa interactiva que proporciona una visión completa de la historia de Japón, desde sus inicios mitológicos hasta la actualidad. Este proyecto tiene como objetivo ofrecer recursos didácticos, artículos y cronologías sobre los eventos históricos clave que han moldeado la cultura, economía y política de Japón.
+##  Arquitectura
 
-La página se encuentra dividida en secciones fáciles de navegar, que permiten a los usuarios explorar diferentes periodos de la historia japonesa a su propio ritmo.
+El proyecto sigue una arquitectura cliente-servidor:
 
----
+```text
+React (Frontend)
+       │
+       ▼
+API REST (Django REST Framework)
+       │
+       ▼
+Base de Datos (SQLite)
+```
 
-## Estado del Proyecto
+### Flujo principal
 
-- **Estado:** Activo
-- **Última actualización:** Septiembre de 2025
-- **Próximos pasos:** Expansión de contenidos sobre Japón contemporáneo, agregando más recursos multimedia como videos, entrevistas y material interactivo.
-
----
-
-## Demostración de Funciones y Aplicaciones
-
-**Características principales:**
-
-- **Exploración por épocas:** Los usuarios pueden acceder a distintas categorías que cubren periodos históricos específicos, como la era feudal, la restauración Meiji y la Segunda Guerra Mundial.
-- **Recursos educativos:** Artículos, ensayos académicos y enlaces a archivos históricos de acceso público.
-- **Interactividad:** Funciones para que los usuarios puedan comentar, sugerir cambios o añadir contenido sobre eventos históricos importantes.
-
----
+1. El usuario accede a la aplicación.
+2. Se autentica mediante login o registro.
+3. Consulta su biblioteca personal.
+4. Busca videojuegos utilizando una API externa.
+5. Añade juegos a su colección.
+6. Gestiona el progreso y la información de cada título.
 
 
-## Acceso al Proyecto
+##  Funcionalidades
 
-El proyecto está alojado en GitHub y puedes acceder a él de la siguiente manera:
+### Usuarios
+- Registro de usuarios.
+- Inicio de sesión.
+- Gestión de sesiones.
+- Control de acceso.
 
-- **Repositorio de GitHub:** [https://github.com/usuario/historia-japonesa](https://github.com/usuario/historia-japonesa)
-- **Documentación:** [https://github.com/usuario/historia-japonesa/wiki](https://github.com/usuario/historia-japonesa/wiki)
+### Biblioteca
+- Añadir videojuegos.
+- Consultar catálogo personal.
+- Visualizar detalles.
+- Actualizar estado del juego.
 
-Para clonar el repositorio:
+### Búsqueda
+- Integración con API externa.
+- Consulta de información actualizada.
+- Búsqueda rápida de videojuegos.
+
+##  Instalación
+
+### Requisitos previos
+
+- Python 3.10+
+- Node.js 18+
+- npm
+- Git
+
+
+### Backend
 
 ```bash
-git clone https://github.com/usuario/historia-japonesa.git
+cd backend
+
+python -m venv venv
+
+# Windows
+venv\Scripts\activate
+
+pip install django djangorestframework djangorestframework-simplejwt django-cors-headers django-filter
+
+python manage.py migrate
+
+python manage.py runserver
 ```
----
 
-## Tecnologías Utilizadas
+### Frontend
 
-Este proyecto ha sido desarrollado con las siguientes tecnologías:
+```bash
+cd frontend
 
-- **Frontend**: React.js, HTML5, CSS3
-- **Backend**: Node.js, Express
-- **Base de Datos**: MySQLServer
-- **Herramientas de Desarrollo**: Git
+npm install
 
+npm run dev
+```
 
----
+##  Variables de entorno
 
-## Personas Contribuyentes
+### Backend (.env)
 
-Este proyecto ha contado con la valiosa colaboración de varias personas, tanto en el desarrollo del código como en la creación de contenido educativo. Gracias a todos los que han aportado su esfuerzo y conocimientos.
+```env
+SECRET_KEY=your_secret_key
+DEBUG=True
+API_KEY=your_external_api_key
+```
 
-### Contribuyentes Notables:
+### Frontend (.env)
 
-- **Carlos Aguiar**: Desarrollo frontend y diseño de la interfaz de usuario.
-- **Kevin Touriño**: Redacción y edición de contenidos históricos.
-- **Christian Rodríguez**: Mantenimiento del backend y base de datos.
-
-Proximamente podreis consultar la lista completa de contribuyentes en el archivo [CONTRIBUTORS.md](CONTRIBUTORS.md).
-
----
-
-## Personas Desarrolladoras del Proyecto
-
-Este proyecto fue desarrollado por el siguiente equipo:
-
-- **Desarrollador Principal**: Kevin Touriño
-- **Desarrollador Backend**: Christian Rodrígez, Alan Jiménez
-- **Desarrollador Frontend**: Carlos Aguiar
-
----
-
-## Licencia
-
-Este proyecto está bajo la Licencia MIT. Consulta el archivo [LICENSE](LICENSE) para más detalles.
+```env
+VITE_API_URL=http://localhost:8000/api
+```
 
 
+##  Mejoras futuras
 
+- Sistema de valoraciones y reseñas.
+- Colecciones compartidas entre usuarios.
+- Recomendaciones personalizadas.
+- Escaneo automático de portadas.
+- Estadísticas de progreso.
+- Integración con plataformas gaming.
+
+##  Documentación
+
+La aplicación ha sido desarrollada como proyecto de fin de ciclo de **Desarrollo de Aplicaciones Web (DAW)**.
+
+##  Autor
+
+**Kevin Touriño Tabera**
+
+Proyecto Final de Ciclo – DAW 2º
