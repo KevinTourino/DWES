@@ -1,0 +1,202 @@
+/* =========================
+   CONTENEDOR PRINCIPAL
+========================= */
+
+.game-library {
+  padding: 20px;
+  background: #0f172a;
+  min-height: 100vh;
+  font-family: system-ui, sans-serif;
+  color: #e2e8f0;
+  margin-top: 30px;
+}
+
+/* =========================
+   HEADER (BANNER)
+========================= */
+
+.cabecera {
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  padding: 28px;
+  border-radius: 18px;
+  color: white;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+}
+
+.cabecera h1 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.cabecera p {
+  margin-top: 6px;
+  opacity: 0.9;
+}
+
+.cabecera-buttons {
+  margin-top: 16px;
+  display: flex;
+  gap: 12px;
+}
+
+.cabecera-buttons button {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s ease;
+}
+
+.cabecera-buttons button:first-child {
+  background: #ffffff;
+  color: #2563eb;
+}
+
+.cabecera-buttons button:last-child {
+  background: #1d4ed8;
+  color: white;
+}
+
+.cabecera-buttons button:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
+/* =========================
+   ESTADÍSTICAS (3 CARDS)
+========================= */
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.stat-card {
+  background: #1e293b;
+  padding: 16px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  transition: transform 0.2s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+}
+
+.stat-icon {
+  background: #334155;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 1.2rem;
+}
+
+.stat-info h3 {
+  margin: 0;
+  font-size: 1.3rem;
+  color: #f8fafc;
+}
+
+.stat-info p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #94a3b8;
+}
+
+/* =========================
+   JUEGOS RECIENTES (LISTA)
+========================= */
+
+.recent {
+  margin-top: 20px;
+  background: #1e293b;
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+}
+
+.recent h2 {
+  margin-bottom: 14px;
+  font-size: 1.2rem;
+  color: #f8fafc;
+}
+
+/* lista */
+.recent-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* item */
+.recent-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+  border-radius: 12px;
+  background: #0f172a;
+  transition: 0.2s ease;
+}
+
+.recent-item:hover {
+  background: #111c33;
+  transform: translateY(-2px);
+}
+
+/* izquierda */
+.game-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.game-img {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: #334155;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  color: #94a3b8;
+}
+
+.game-text h4 {
+  margin: 0;
+  color: #f8fafc;
+  font-size: 0.95rem;
+}
+
+.game-text span {
+  font-size: 0.8rem;
+  color: #94a3b8;
+}
+
+/* derecha rating */
+.rating {
+  color: #fbbf24;
+  font-weight: bold;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 900px) {
+  .stats {
+    grid-template-columns: 1fr;
+  }
+
+  .header-buttons {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

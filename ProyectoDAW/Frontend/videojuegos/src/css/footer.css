@@ -1,0 +1,70 @@
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  margin-top: 100px;
+  background: rgba(26, 26, 46, 0.9);
+  border-top: 1px solid rgba(124, 58, 237, 0.3);
+  box-shadow: 0 -10px 25px rgba(0, 0, 0, 0.25);
+  color: #e0e7ff;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+/* Lado izquierdo */
+.footer-left .footer-link {
+  color: #c7d2fe;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+  text-decoration: none;
+}
+
+.footer-left .footer-link:hover {
+  color: #3b82f6;
+  text-decoration: underline;
+}
+
+/* Centro */
+.footer-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.4rem;
+}
+
+.footer-center img {
+  width: 60px;
+  height: auto;
+  filter: drop-shadow(0 0 6px rgba(59, 130, 246, 0.3));
+}
+
+.footer-center p {
+  font-size: 0.9rem;
+  color: #c7d2fe;
+  margin: 0;
+}
+
+/* Derecha */
+.footer-right .credits {
+  font-size: 0.85rem;
+  color: rgba(224, 231, 255, 0.7);
+  font-style: italic;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .footer {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .footer-left,
+  .footer-right {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+}

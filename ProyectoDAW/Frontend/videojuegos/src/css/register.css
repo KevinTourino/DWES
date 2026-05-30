@@ -75,3 +75,27 @@
   font-size: 0.9rem;
   font-weight: 500;
 }
+
+
+.login {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.login p {
+  color: #c7d2fe;
+  font-size: 0.9rem;
+}
+
+.login span {
+  color: #3b82f6;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+  text-decoration: none;
+}
+
+.login span:hover {
+  color: #7c3aed;
+  text-decoration: underline;
+}

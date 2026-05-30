@@ -76,3 +76,26 @@
 .btn:hover {
   opacity: 0.9;
 }
+
+.register {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.register p {
+  color: #c7d2fe;
+  font-size: 0.9rem;
+}
+
+.register span {
+  color: #3b82f6;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+  text-decoration: none;
+}
+
+.register span:hover {
+  color: #7c3aed;
+  text-decoration: underline;
+}

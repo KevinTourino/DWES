@@ -129,6 +129,16 @@ const Register = () => {
                     {error}
                 </p>
             )}
+            <div class="register">
+                <p>
+                    Ya tienes una cuenta?{' '}
+                    <span
+                    onClick={() => navigate('/login')}
+                    >
+                    Inicia sesión aquí
+                    </span>
+                </p>
+            </div>
         </form>
         </div>
     )

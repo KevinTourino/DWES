@@ -30,9 +30,8 @@ const Login = () => {
         password: formPassword
       })
       .then((response) => {
-        console.log("ACCESS TOKEN:", response.data.access);
-        console.log("REFRESH TOKEN:", response.data.refresh);
         sessionStorage.setItem("access", response.data.access);
+        window.dispatchEvent(new Event('authChange'))
 
         setFormName("");
         setFormPassword("");
@@ -63,6 +62,16 @@ const Login = () => {
             </div>
 
             <button type="submit" className="btn">Continuar</button>
+            <div class="register">
+              <p>
+                No tienes una cuenta?{' '}
+                <span
+                  onClick={() => navigate('/register')}
+                >
+                  Regístrate aquí
+                </span>
+              </p>
+            </div>
         </form>
     </div>
   )
