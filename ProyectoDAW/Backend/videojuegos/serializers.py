@@ -1,11 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from .models import (
-    Biblioteca,
-    Plataforma,
-    Videojuego,
-    VideojuegoPlataforma
-)
+from .models import Videojuego, Plataforma, BibliotecaUsuario, Genero
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -41,75 +36,44 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 
 
-class PlataformaSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Plataforma
-        fields = ["id", "nombre", "codigo"]
-
-
-class VideojuegoPlataformaSerializer(serializers.ModelSerializer):
-
-    plataforma = PlataformaSerializer(read_only=True)
-
-    class Meta:
-        model = VideojuegoPlataforma
-        fields = [
-            "id",
-            "plataforma",
-            "fecha_lanzamiento",
-            "version",
-            "exclusivo"
-        ]
-
-
-class VideojuegoSerializer(serializers.ModelSerializer):
-
-    plataformas = VideojuegoPlataformaSerializer(
-        source="videojuegoplataforma_set",
-        many=True,
-        read_only=True
-    )
-
-    class Meta:
-        model = Videojuego
-        fields = [
-            "id",
-            "titulo",
-            "descripcion",
-            "precio",
-            "fecha_lanzamiento",
-            "plataformas"
-        ]
-
-
 class BibliotecaSerializer(serializers.ModelSerializer):
-
-    videojuego = VideojuegoSerializer(read_only=True)
-
-    videojuego_id = serializers.IntegerField(write_only=True)
+    videojuego = serializers.DictField(write_only=True)
+    plataformas = serializers.DictField(write_only=True)
 
     class Meta:
-        model = Biblioteca
-        fields = [
-            "id",
-            "videojuego",
-            "videojuego_id",
-            "fecha_compra"
-        ]
-        read_only_fields = ["fecha_compra"]
+        model = BibliotecaUsuario
+        fields = ["videojuego", "plataformas"]
 
     def create(self, validated_data):
-        usuario = self.context["request"].user
-        videojuego_id = validated_data.pop("videojuego_id")
+        request = self.context["request"]
+        usuario = request.user
+
+        videojuego_data = validated_data.pop("videojuego")
+        plataformas_data = validated_data.pop("plataformas")
+
+        generos = videojuego_data.pop("generos", [])
 
         videojuego, _ = Videojuego.objects.get_or_create(
-            id=videojuego_id
+            nombre=videojuego_data["nombre"],
+            defaults=videojuego_data
         )
 
-        biblioteca, created = Biblioteca.objects.get_or_create(
-            usuario=usuario,
-            videojuego=videojuego
-        )
+        # 🎮 géneros
+        for nombre_genero in generos:
+            genero, _ = Genero.objects.get_or_create(nombre=nombre_genero)
+            videojuego.generos.add(genero)
 
-        return biblioteca
+        # 📱 plataformas
+        for nombre_plataforma, estado in plataformas_data.items():
+            plataforma, _ = Plataforma.objects.get_or_create(nombre=nombre_plataforma)
+
+            BibliotecaUsuario.objects.create(
+                usuario=usuario,
+                videojuego=videojuego,
+                plataforma=plataforma,
+                estado=estado
+            )
+
+        return {
+            "message": "Biblioteca creada correctamente",
+        }

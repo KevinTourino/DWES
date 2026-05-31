@@ -28,7 +28,6 @@ from videojuegos.views import (
     game_detail_view,
     RegisterView,
     BibliotecaCreateView,
-    BibliotecaListView
 )
 
 urlpatterns = [
@@ -37,18 +36,7 @@ urlpatterns = [
     path("games/<int:id>/", game_detail_view),
     path('register/', RegisterView.as_view()),
 
-
-    path(
-        "biblioteca/",
-        BibliotecaListView.as_view(),
-        name="biblioteca-list"
-    ),
-
-    path(
-        "biblioteca/add/",
-        BibliotecaCreateView.as_view(),
-        name="biblioteca-add"
-    ),
+    path('addGame/', BibliotecaCreateView.as_view()),
 
     path('api/token/', TokenObtainPairView.as_view()),
     path('api/token/refresh/', TokenRefreshView.as_view()),

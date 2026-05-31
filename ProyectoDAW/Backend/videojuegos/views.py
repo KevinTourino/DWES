@@ -3,12 +3,11 @@ from django.http import JsonResponse
 from .service import fetch_igdb_games, fetch_igdb_games_id
 
 from django.contrib.auth.models import User
-from rest_framework import generics
+from rest_framework import generics, permissions
 from .serializers import RegisterSerializer
 from .filters import UserFilter
 
-from rest_framework import generics, permissions
-from .models import Biblioteca
+from .models import BibliotecaUsuario
 from .serializers import BibliotecaSerializer
 
 
@@ -45,23 +44,14 @@ class UserListView(generics.ListAPIView):
 
 
 
+
 class BibliotecaCreateView(generics.CreateAPIView):
-
+    queryset = BibliotecaUsuario.objects.all()
     serializer_class = BibliotecaSerializer
 
-    permission_classes = [permissions.IsAuthenticated]
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context["request"] = self.request
+        return context
 
 
-class BibliotecaListView(generics.ListAPIView):
-
-    serializer_class = BibliotecaSerializer
-
-    permission_classes = [permissions.IsAuthenticated]
-
-    def get_queryset(self):
-
-        return Biblioteca.objects.filter(
-            usuario=self.request.user
-        ).select_related(
-            "videojuego"
-        )

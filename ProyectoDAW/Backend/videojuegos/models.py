@@ -1,79 +1,67 @@
 from django.db import models
 from django.conf import settings
+from django.contrib.auth.models import User
 
-
-class Biblioteca(models.Model):
-    usuario = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE
-    )
-
-    videojuego = models.ForeignKey(
-        'Videojuego',
-        on_delete=models.CASCADE
-    )
-
-    fecha_compra = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=['usuario', 'videojuego'],
-                name='unique_usuario_videojuego'
-            )
-        ]
-        indexes = [
-            models.Index(fields=['usuario']),
-        ]
-
+class Genero(models.Model):
+    nombre = models.CharField(max_length=100)
+    
     def __str__(self):
-        return f"{self.usuario} - {self.videojuego}"
+        return self.nombre
 
-class Plataforma(models.Model):
-    nombre = models.CharField(max_length=100, unique=True)
-    codigo = models.CharField(max_length=10, unique=True, help_text="Ej: PS5, XBOX, PC")
+class Videojuego(models.Model):
+    nombre = models.CharField(max_length=200)
+    anio_lanzamiento = models.DateField()
+    descripcion = models.TextField()
+    generos = models.ManyToManyField(Genero)
+    coverUrl = models.TextField()
 
     def __str__(self):
         return self.nombre
 
 
-class Videojuego(models.Model):
-    titulo = models.CharField(max_length=200)
-    descripcion = models.TextField(blank=True)
+class Plataforma(models.Model):
+    nombre = models.CharField(max_length=100)
 
-    precio = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
-    fecha_lanzamiento = models.DateField(null=True, blank=True)
-
-    # Relación N:M con tabla intermedia
-    plataformas = models.ManyToManyField(Plataforma, through='VideojuegoPlataforma')
-
-
-    indexes = [
-        models.Index(fields=['videojuego']),
-        models.Index(fields=['plataforma']),
-    ]
-    
     def __str__(self):
-        return self.titulo
+        return self.nombre
 
 
-class VideojuegoPlataforma(models.Model):
-    """Tabla intermedia (through)"""
+class BibliotecaUsuario(models.Model):
+    ESTADOS = [
+        ("pendiente", "Pendiente"),
+        ("jugando", "Jugando"),
+        ("completado", "Completado"),
+        ("abandonado", "Abandonado"),
+    ]
 
-    plataforma = models.ForeignKey(Plataforma, on_delete=models.PROTECT)
-    videojuego = models.ForeignKey(Videojuego, on_delete=models.CASCADE)
+    estado = models.CharField(
+        max_length=20,
+        choices=ESTADOS,
+        default="pendiente"
+    )
 
-    fecha_lanzamiento = models.DateField()
-    version = models.CharField(max_length=50, blank=True)
-    exclusivo = models.BooleanField(default=False)
+    fecha_agregado = models.DateTimeField(auto_now_add=True)
+
+    usuario = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="biblioteca"
+    )
+
+    videojuego = models.ForeignKey(
+        Videojuego,
+        on_delete=models.CASCADE,
+        related_name="usuarios"
+    )
+
+    plataforma = models.ForeignKey(
+        Plataforma,
+        on_delete=models.CASCADE,
+        related_name="biblioteca"
+    )
 
     class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=['videojuego', 'plataforma'],
-                name='unique_videojuego_plataforma'
-            )
-        ]
+        unique_together = ("usuario", "videojuego", "plataforma")
 
     def __str__(self):
-        return f"{self.videojuego} en {self.plataforma}"
+        return f"{self.usuario} - {self.videojuego} ({self.plataforma})"

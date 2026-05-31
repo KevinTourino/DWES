@@ -1,6 +1,46 @@
 import "../css/home.css"
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const navigate = useNavigate();
+
+  const goToLibrary = () => {
+    const token = sessionStorage.getItem("access");
+
+    if (!token) {
+        const goLogin = window.confirm(
+            "Necesitas iniciar sesión. ¿Quieres ir al login?"
+        );
+
+        if (goLogin) {
+            navigate("/login");
+        }
+
+        return;
+    }
+
+    navigate("/library");
+  };
+
+  const goToAddGame = () => {
+    const token = sessionStorage.getItem("access");
+
+    if (!token) {
+        const goLogin = window.confirm(
+            "Necesitas iniciar sesión. ¿Quieres ir al login?"
+        );
+
+        if (goLogin) {
+            navigate("/login");
+        }
+
+        return;
+    }
+
+    navigate("/addGame");
+  };
+
+
   return (
     <div className="game-library">
 
@@ -9,8 +49,13 @@ const Home = () => {
     <p>Organiza, gestiona y descubre tu colección de videojuegos</p>
 
     <div className="cabecera-buttons">
-      <button>Ver Biblioteca</button>
-      <button>Añadir Juego</button>
+      <button onClick={goToLibrary}>
+          Ver Biblioteca
+      </button>
+
+      <button onClick={goToAddGame}>
+          Añadir Juego
+      </button>
     </div>
   </div>
 
