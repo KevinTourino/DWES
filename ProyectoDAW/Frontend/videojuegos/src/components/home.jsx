@@ -1,8 +1,28 @@
 import "../css/home.css"
 import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 const Home = () => {
   const navigate = useNavigate();
+
+  const [stats, setStats] = useState({
+    total_juegos: 0,
+    total_completados: 0,
+    ultimos_juegos: []
+  });
+
+
+  useEffect(() => {
+  fetch("http://localhost:8000/biblioteca/estadisticas/")
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      setStats(data);
+    })
+    .catch((error) =>
+      console.error("Error obteniendo estadísticas:", error)
+    );
+}, []);
 
   const goToLibrary = () => {
     const token = sessionStorage.getItem("access");
@@ -64,7 +84,7 @@ const Home = () => {
     <div className="stat-card">
       <div className="stat-icon">📚</div>
       <div className="stat-info">
-        <h3>127</h3>
+        <h3>{stats.total_juegos}</h3>
         <p>Juegos en biblioteca</p>
       </div>
     </div>
@@ -72,39 +92,46 @@ const Home = () => {
     <div className="stat-card">
       <div className="stat-icon">🏆</div>
       <div className="stat-info">
-        <h3>43</h3>
+        <h3>{stats.total_completados}</h3>
         <p>Completados</p>
-      </div>
-    </div>
-
-    <div className="stat-card">
-      <div className="stat-icon">⭐</div>
-      <div className="stat-info">
-        <h3>8.4</h3>
-        <p>Puntuación media</p>
       </div>
     </div>
   </div>
 
   {/* RECIENTES */}
-  <div className="recent">
-    <h2>Juegos Recientes</h2>
+<div className="recent">
+  <h2>Juegos Recientes</h2>
 
-    <div className="recent-list">
+  <div className="recent-list">
 
-      <div className="recent-item">
-        <div className="game-left">
-          <div className="game-img">IMG</div>
-          <div className="game-text">
-            <h4>Nombre del Juego</h4>
-            <span>Plataforma · Género</span>
+    {stats?.ultimos_juegos?.length > 0 ? (
+      stats.ultimos_juegos.map((juego, index) => (
+        <div className="recent-item" key={index}>
+          <div className="game-left">
+
+            <img
+              className="game-img"
+              src={juego.coverUrl}
+              alt={juego.nombre}
+            />
+
+            <div className="game-text">
+              <h4>{juego.nombre}</h4>
+
+              <span>
+                {juego.generos?.join(" · ")}
+              </span>
+
+            </div>
           </div>
         </div>
-        <div className="rating">9.1 ⭐</div>
-      </div>
+      ))
+    ) : (
+      <p>No hay juegos recientes</p>
+    )}
 
-    </div>
   </div>
+</div>
 
 </div>
   );

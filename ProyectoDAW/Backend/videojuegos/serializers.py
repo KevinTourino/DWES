@@ -77,3 +77,55 @@ class BibliotecaSerializer(serializers.ModelSerializer):
         return {
             "message": "Biblioteca creada correctamente",
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class UltimoJuegoSerializer(serializers.ModelSerializer):
+    generos = serializers.SerializerMethodField()
+
+    class Meta:
+        model = BibliotecaUsuario
+        fields = ["nombre", "generos", "coverUrl"]
+
+    nombre = serializers.CharField(source="videojuego.nombre")
+    coverUrl = serializers.CharField(source="videojuego.coverUrl")
+
+    def get_generos(self, obj):
+        return list(
+            obj.videojuego.generos.values_list("nombre", flat=True)
+        )
+
+
+class EstadisticasBibliotecaSerializer(serializers.Serializer):
+    total_juegos = serializers.IntegerField()
+    total_completados = serializers.IntegerField()
+    ultimos_juegos = UltimoJuegoSerializer(many=True)
+
+
+
+
+
+class MisJuegosSerializer(serializers.ModelSerializer):
+    titulo = serializers.CharField(source="videojuego.nombre")
+    imagen = serializers.CharField(source="videojuego.coverUrl")
+    generos = serializers.SerializerMethodField()
+
+    class Meta:
+        model = BibliotecaUsuario
+        fields = ["titulo", "imagen", "generos"]
+
+    def get_generos(self, obj):
+        return list(
+            obj.videojuego.generos.values_list("nombre", flat=True)
+        )
