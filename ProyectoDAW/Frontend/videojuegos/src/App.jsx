@@ -9,6 +9,7 @@ import GameDetail from './components/GameDetail'
 import NotFound from './components/NotFound'
 import ProtectedRoute from './components/auth/ProtectRoute'
 import './App.css'
+import GameLibrary from "./components/GameLibrary"
 
 function App() {
   return (
@@ -43,6 +44,15 @@ function App() {
             element={
               <ProtectedRoute>
                 <GameDetail />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/game-library/:id"
+            element={
+              <ProtectedRoute>
+                <GameLibrary />
               </ProtectedRoute>
             }
           />

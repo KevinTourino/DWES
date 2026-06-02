@@ -29,7 +29,8 @@ from videojuegos.views import (
     RegisterView,
     BibliotecaCreateView,
     EstadisticasBibliotecaView,
-    MisJuegosView
+    MisJuegosView,
+    VideojuegoDetailView
 )
 
 urlpatterns = [
@@ -41,6 +42,7 @@ urlpatterns = [
     path('addGame/', BibliotecaCreateView.as_view()),
     path("biblioteca/estadisticas/", EstadisticasBibliotecaView.as_view()),
     path("biblioteca/juegos/", MisJuegosView.as_view()),
+    path("videojuegos/<int:id>/", VideojuegoDetailView.as_view()),
 
     path('api/token/', TokenObtainPairView.as_view()),
     path('api/token/refresh/', TokenRefreshView.as_view()),

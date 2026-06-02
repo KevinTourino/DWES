@@ -79,7 +79,7 @@ const AddGames = () => {
                     </button>
                 </form>
             </div>
-            <div className="card-list">
+            <div className="card">
                 {loading ? (
                     <p className="informacion">Procesando petición...</p>
                 ) : results.length > 0 ? (

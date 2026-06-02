@@ -10,8 +10,8 @@ from .serializers import RegisterSerializer
 from .filters import UserFilter
 from rest_framework.response import Response
 
-from .models import BibliotecaUsuario
-from .serializers import BibliotecaSerializer,EstadisticasBibliotecaSerializer, UltimoJuegoSerializer, MisJuegosSerializer
+from .models import BibliotecaUsuario, Videojuego
+from .serializers import BibliotecaSerializer,EstadisticasBibliotecaSerializer, UltimoJuegoSerializer, MisJuegosSerializer, VideojuegoDetailSerializer
 
 
 
@@ -152,3 +152,27 @@ class MisJuegosView(generics.GenericAPIView):
         serializer = self.get_serializer(filtrados, many=True)
 
         return Response(serializer.data)
+    
+
+
+
+
+
+
+class VideojuegoDetailView(generics.RetrieveAPIView):
+    serializer_class = VideojuegoDetailSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        try:
+            return (
+                BibliotecaUsuario.objects
+                .select_related("videojuego", "plataforma")
+                .prefetch_related("videojuego__generos")
+                .get(
+                    id=self.kwargs["id"],
+                    usuario=self.request.user
+                )
+            )
+        except BibliotecaUsuario.DoesNotExist:
+            raise NotFound("Este juego no está en tu biblioteca")

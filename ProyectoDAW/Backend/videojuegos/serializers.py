@@ -123,9 +123,39 @@ class MisJuegosSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = BibliotecaUsuario
-        fields = ["titulo", "imagen", "generos"]
+        fields = ["id", "titulo", "imagen", "generos"]
 
     def get_generos(self, obj):
         return list(
             obj.videojuego.generos.values_list("nombre", flat=True)
         )
+    
+
+
+
+
+
+
+
+class VideojuegoDetailSerializer(serializers.ModelSerializer):
+    nombre = serializers.CharField(source="videojuego.nombre")
+    coverUrl = serializers.CharField(source="videojuego.coverUrl")
+    generos = serializers.SerializerMethodField()
+
+    estado = serializers.CharField()
+    plataforma = serializers.CharField(source="plataforma.nombre")
+
+    class Meta:
+        model = BibliotecaUsuario
+        fields = [
+            "id",
+            "nombre",
+            "coverUrl",
+            "generos",
+            "estado",
+            "plataforma",
+            "fecha_agregado",
+        ]
+
+    def get_generos(self, obj):
+        return list(obj.videojuego.generos.values_list("nombre", flat=True))

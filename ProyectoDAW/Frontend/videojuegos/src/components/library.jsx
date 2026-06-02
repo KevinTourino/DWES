@@ -63,7 +63,7 @@ const Library = () => {
             <div className="card-list">
     {totalGames === 0 ? (
         <div className="sin-juegos">
-    <div className="sin-juegos-icon">🎮</div>
+    <div className="sin-juegos-icon"></div>
 
     <h2>Tu biblioteca está vacía</h2>
 
@@ -80,7 +80,7 @@ const Library = () => {
             <div
                 key={game.id || game.titulo}
                 style={{ marginBottom: "20px", cursor: "pointer" }}
-                onClick={() => navigate(`/game/${game.id}`)}
+                onClick={() => navigate(`/game-library/${game.id}`)}
             >
                 <h2>{game.titulo}</h2>
 
